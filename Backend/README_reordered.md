@@ -1,5 +1,3 @@
-
-
 # User API Documentation
 
 ## POST /users/register
@@ -160,7 +158,6 @@ Authenticates a user with email and password. Returns a JWT token and user data 
 - The `email` and `password` must match an existing user.
 - The returned `token` is a JWT for authentication in subsequent requests.
 
-
 ---
 
 ## GET /users/profile
@@ -203,7 +200,6 @@ or
 ```
 
 ---
-
 
 ## GET /users/logout
 
