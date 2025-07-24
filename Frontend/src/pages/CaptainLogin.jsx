@@ -1,27 +1,50 @@
-import React, { useState } from 'react'
+import React, { useState ,useContext} from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { CaptainDataContext } from '../context/CaptainContext'
 
 const CaptainLogin = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [captainData, setCaptainData] = useState('')
+  const [error, setError] = useState('') // Add error state
+  const {captain,setCaptain} = useContext(CaptainDataContext);
+  const navigate = useNavigate()
 
-
-  const submitHandler = (e) => {
+  const submitHandler =async (e) => {
     e.preventDefault();
-    setCaptainData({
+    setError(''); // Reset error before request
+      const captain={
       email:email,
       password
-    })
+    }
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain);
+      if(response.status === 200 || response.status === 201) {
+        const data = response.data;
+        setCaptain(data.captain);
+        localStorage.setItem("token", data.token);
+        navigate("/captain-home");
+      }
+
     setEmail('')
     setPassword('')
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        "Login failed. Please check your credentials and try again."
+      );
+    }
   }
   return (
     <div className='p-7 h-screen flex flex-col justify-between'>
       <div>
         <img className='w-20 mb-3' src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
-
+        {/* Show error message if exists */}
+        {error && (
+          <div className="mb-4 text-red-600 text-center font-semibold">{error}</div>
+        )}
         <form onSubmit={(e) => {
           submitHandler(e)
         }}>
