@@ -13,6 +13,8 @@ import { UserDataContext } from './context/UserContext.jsx'
 import { CaptainDataContext } from './context/CaptainContext.jsx'
 import CaptainProtectedWraper from './pages/CaptainProtectedWraper.jsx'
 import CaptainLogout from './pages/CaptainLogout.jsx'
+import Riding from './pages/Riding.jsx'
+import CaptainRiding from './pages/CaptainRiding.jsx'
 
 const App = () => {
 
@@ -24,6 +26,8 @@ const App = () => {
         <Route path='/signup' element={<UserSignup />} />
         <Route path='/captain-login' element={<CaptainLogin />} />
         <Route path='/captain-signup' element={<CaptainSignup />} />
+         <Route path='/riding' element={<Riding />} />
+        <Route path='/captain-riding' element={<CaptainRiding />} />
         <Route path='/home' element={<UserProtectedWraper><Home/></UserProtectedWraper>} />
         <Route path='/users/logout' element={<UserProtectedWraper><UserLogout/></UserProtectedWraper>} />
         <Route path='/captain-home' element={<CaptainProtectedWraper><CaptainHome /></CaptainProtectedWraper>} />
