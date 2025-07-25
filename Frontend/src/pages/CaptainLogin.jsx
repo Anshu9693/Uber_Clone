@@ -8,13 +8,13 @@ const CaptainLogin = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('') // Add error state
+  const [error, setError] = useState('') 
   const {captain,setCaptain} = useContext(CaptainDataContext);
   const navigate = useNavigate()
 
   const submitHandler =async (e) => {
     e.preventDefault();
-    setError(''); // Reset error before request
+    setError(''); 
       const captain={
       email:email,
       password
