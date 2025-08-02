@@ -13,7 +13,7 @@ if(!pickup || !distance) {
     }
     const baseFare = {
         auto: 30,
-        bike: 20,
+        bike:20,
         car: 50,
     };
     const perKmRate = {
@@ -22,23 +22,23 @@ if(!pickup || !distance) {
         car: 15,
     };
     const perMinuteRate = {
-        auto: 2,
         bike: 1,
         car: 3,
+        auto:2
     };
     const fare = {
         auto:
-             baseFare.auto +
-            (distanceTime.distance.value / 1000).toFixed(2) * perKmRate.auto +
-            (distanceTime.duration.value / 60).toFixed(2) * perMinuteRate.auto,
+             (baseFare.auto +
+            (distanceTime.distance.value / 1000) * perKmRate.auto +
+            (distanceTime.duration.value / 60) * perMinuteRate.auto).toFixed(2),
         bike:
-            baseFare.bike +
-            (distanceTime.distance.value / 1000).toFixed(2) * perKmRate.bike +
-            (distanceTime.duration.value / 60).toFixed(2) * perMinuteRate.bike,
+          (  baseFare.bike +
+            (distanceTime.distance.value / 1000) * perKmRate.bike +
+            (distanceTime.duration.value / 60) * perMinuteRate.bike).toFixed(2),
         car:
-            baseFare.car +
-            (distanceTime.distance.value / 1000).toFixed(2) * perKmRate.car +
-            (distanceTime.duration.value / 60).toFixed(2) * perMinuteRate.car,
+          ( baseFare.car +
+            (distanceTime.distance.value / 1000) * perKmRate.car +
+            (distanceTime.duration.value / 60) * perMinuteRate.car).toFixed(2)
     };
     console.log(fare);
     return fare
