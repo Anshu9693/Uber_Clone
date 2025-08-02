@@ -54,17 +54,14 @@ function getOtp(num) {
     }
     return generateOtp(num);
 }
-module.exports.createRide = async (user,pickup,destination,vehicleType)=> {
-    if(!user || !pickup || !destination || !vehicleType) {
-        throw new Error("User, pickup, destination and vehicle type are required to create a ride");
-    }
+module.exports.createRide = async (user, pickup, destination, vehicleType) => {
     let fare;
     try {
         fare = await getFare(pickup, destination);
     } catch (err) {
         throw new Error(err.message || 'Failed to calculate fare');
     }
-    if (!fare || typeof fare[vehicleType] !== 'number') {
+    if (!fare || isNaN(Number(fare[vehicleType]))) {
         throw new Error('Fare calculation failed for vehicle type: ' + vehicleType);
     }
     const ride = new rideModel({
@@ -72,10 +69,9 @@ module.exports.createRide = async (user,pickup,destination,vehicleType)=> {
         pickup,
         destination,
         otp: getOtp(6),
-        fare: fare[vehicleType],
+        fare: Number(fare[vehicleType]),
     });
     await ride.save();
     return ride;
 }
-
 

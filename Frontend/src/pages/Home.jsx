@@ -128,7 +128,7 @@ const Home = () => {
     setFare(response.data.fare);
   }
 
-  async function createRide() {
+  async function createRide(vehicleType) {
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/rides/create`,
       {
