@@ -8,7 +8,7 @@ const UserProtectedWraper = ({ children }) => {
   const Navigate = useNavigate();
   const [isLoading, setisLoading] = useState(true);
   const { user, setUser } = useContext(UserDataContext);
-  console.log(token);
+  // console.log(token);
   useEffect(() => {
     if (!token) {
       Navigate("/login");
@@ -24,7 +24,7 @@ const UserProtectedWraper = ({ children }) => {
     .then((response) => {
       if (response.status === 200 || response.status === 201) {
         const data = response.data;
-        setUser(response.data.user);
+        setUser(response.data);
         setisLoading(false);
       }
     })

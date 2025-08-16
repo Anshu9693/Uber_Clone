@@ -2,6 +2,8 @@ const { model } = require("mongoose");
 const rideService = require("../services/ride.service");
 
 const { validationResult } = require("express-validator");
+const mapsService = require("../services/maps.services");
+const {sendMessageToSocketId} = require('../socket')
 
 module.exports.createRide = async (req, res) => {
   const errors = validationResult(req);
@@ -17,7 +19,18 @@ module.exports.createRide = async (req, res) => {
       destination,
       vehicleType
     );
-    return res.status(201).json({ ride });
+     res.status(201).json({ ride });
+
+     const pickupCoordinates = await mapsService.getAddressCoordinate(pickup);
+     console.log(pickupCoordinates)
+    const captainsInRaduius = await mapsService.getCaptainInTheRadius(pickupCoordinates.ltd,pickupCoordinates.lng,50000)// Assuming 5 km radius
+
+    ride.otp="",
+    captainsInRaduius.map(async (captain) => {
+    sendMessageToSocketId(captain.socketId)
+    })
+
+    console.log(captainsInRaduius);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

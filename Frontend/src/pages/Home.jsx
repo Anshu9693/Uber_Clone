@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState ,useEffect} from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import axios from "axios";
@@ -8,6 +8,9 @@ import VehiclePanel from "../components/VehiclePanel";
 import ConfirmRide from "../components/ConfirmRide";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
+import { SocketContext } from "../context/SocketContext";
+import { UserDataContext } from "../context/UserContext.jsx";
+import { useContext } from "react";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -28,6 +31,14 @@ const Home = () => {
   const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
   const [vehicleType, setVehicleType] = useState(null);
+
+   const { socket } = useContext(SocketContext)
+    const { user } = useContext(UserDataContext)
+
+    useEffect(() => {
+        socket.emit("join", { userType: "user", userId: user._id })
+    }, [ user ])
+
 
   const handlePickupChange = async (e) => {
     setPickup(e.target.value);
@@ -128,7 +139,7 @@ const Home = () => {
     setFare(response.data.fare);
   }
 
-  async function createRide(vehicleType) {
+  async function createRide() {
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/rides/create`,
       {
@@ -229,7 +240,6 @@ const Home = () => {
         className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
       >
         <VehiclePanel
-          createRide={createRide}
           selectVehicle={setVehicleType}
           fare={fare}
           setConfirmRidePanel={setConfirmRidePanel}
@@ -238,7 +248,7 @@ const Home = () => {
       </div>
       <div
         ref={confirmRidePanelRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-12 pt-12"
       >
         <ConfirmRide
           createRide={createRide}
