@@ -23,7 +23,7 @@ module.exports.createRide = async (req, res) => {
 
      const pickupCoordinates = await mapsService.getAddressCoordinate(pickup);
      console.log(pickupCoordinates)
-    const captainsInRaduius = await mapsService.getCaptainInTheRadius(pickupCoordinates.ltd,pickupCoordinates.lng,50000)// Assuming 5 km radius
+    const captainsInRaduius = await mapsService.getCaptainInTheRadius(pickupCoordinates.ltd,pickupCoordinates.lng,2000)// Assuming 5 km radius
 
     ride.otp=""
 
@@ -105,4 +105,29 @@ module.exports.startRide = async (req, res) => {
     } catch (err) {
         return res.status(500).json({ message: err.message });
     }
+}
+
+
+module.exports.endRide = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { rideId } = req.body;
+
+    try {
+        const ride = await rideService.endRide({ rideId, captain: req.captain });
+
+        sendMessageToSocketId(ride.user.socketId, {
+            event: 'ride-ended',
+            data: ride
+        })
+
+
+
+        return res.status(200).json(ride);
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    } s
 }

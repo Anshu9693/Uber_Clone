@@ -2,6 +2,7 @@ const rideModel = require("../models/ride.model")
 const mapsService = require("./maps.services")
 const crypto = require('crypto');
 
+
 async function getFare (pickup,distance){
 if(!pickup || !distance) {
     throw new Error("Pickup location and distance are required to calculate fare");
@@ -127,6 +128,35 @@ module.exports.startRide = async ({ rideId, otp, captain }) => {
         _id: rideId
     }, {
         status: 'ongoing'
+    })
+
+    return ride;
+}
+
+
+
+module.exports.endRide = async ({ rideId, captain }) => {
+    if (!rideId) {
+        throw new Error('Ride id is required');
+    }
+
+    const ride = await rideModel.findOne({
+        _id: rideId,
+        captain: captain._id
+    }).populate('user').populate('captain').select('+otp');
+
+    if (!ride) {
+        throw new Error('Ride not found');
+    }
+
+    if (ride.status !== 'ongoing') {
+        throw new Error('Ride not ongoing');
+    }
+
+    await rideModel.findOneAndUpdate({
+        _id: rideId
+    }, {
+        status: 'completed'
     })
 
     return ride;
