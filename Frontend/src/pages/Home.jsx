@@ -73,7 +73,7 @@ const Home = () => {
         setPickupSuggestions(response.data.map((s) => s.description));
       } catch (err) {
         setPickupSuggestions([]);
-        console.error("Pickup suggestion error:", err);
+        // console.error("Pickup suggestion error:", err);
       }
     } 
   };
@@ -173,7 +173,7 @@ const Home = () => {
       }
     );
 
-    console.log(response.data);
+    // console.log(response.data);
   }
 
   // Handle suggestion click for both pickup and destination
