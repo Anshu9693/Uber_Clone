@@ -25,7 +25,7 @@ const UserProtectedWraper = ({ children }) => {
       if (response.status === 200 || response.status === 201) {
         const data = response.data;
         setUser(response.data);
-        setisLoading(false);
+        // setisLoading(false);
       }
     })
     .catch((err) => {

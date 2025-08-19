@@ -31,13 +31,23 @@ const Home = () => {
   const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
   const [vehicleType, setVehicleType] = useState(null);
+  const [ ride, setRide ] = useState(null)
+  
+  
 
    const { socket } = useContext(SocketContext)
-    const { user } = useContext(UserDataContext)
+   const { user } = useContext(UserDataContext)
 
     useEffect(() => {
         socket.emit("join", { userType: "user", userId: user._id })
     }, [ user ])
+
+      socket.on('ride-confirmed', ride => {
+        setVehicleFound(false)
+        setWaitingForDriver(true)
+        setVehiclePanel(false)
+        setRide(ride)
+    })
 
 
   const handlePickupChange = async (e) => {
@@ -121,6 +131,9 @@ const Home = () => {
       transform: waitingForDriver ? "translateY(0)" : "translateY(100%)",
     });
   }, [waitingForDriver]);
+
+
+ 
 
   async function findTrip() {
     setVehiclePanel(true);
@@ -277,7 +290,12 @@ const Home = () => {
         ref={waitingForDriverRef}
         className="fixed w-full z-10 bottom-0 bg-white px-3 py-6 pt-12"
       >
-        <WaitingForDriver waitingForDriver={waitingForDriver} />
+        <WaitingForDriver
+                    ride={ride}
+                    setVehicleFound={setVehicleFound}
+                    setWaitingForDriver={setWaitingForDriver}
+                    waitingForDriver={waitingForDriver}
+        />
       </div>
     </div>
   );
