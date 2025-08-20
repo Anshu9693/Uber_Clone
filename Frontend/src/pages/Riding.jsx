@@ -5,12 +5,12 @@ import { SocketContext } from '../context/SocketContext'
 import { useNavigate } from 'react-router-dom'
 import LiveTracking from '../components/LiveTracking'
 const Riding = () => {
-        const location = useLocation()
+    const location = useLocation()
     const { ride } = location.state || {} // Retrieve ride data
-     const { socket } = useContext(SocketContext)
+    const { socket } = useContext(SocketContext)
     const navigate = useNavigate()
 
-    
+    console.log(ride)
     socket.on("ride-ended", () => {
         navigate('/home')
     })
