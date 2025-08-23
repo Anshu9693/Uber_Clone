@@ -15,7 +15,7 @@ connectToDb()
 
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173", // set this to your deployed frontend URL
+    origin: process.env.FRONTEND_URL , // set this to your deployed frontend URL
     credentials: true
 }));
 app.use(express.json())
