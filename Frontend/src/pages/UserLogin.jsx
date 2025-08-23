@@ -18,7 +18,7 @@ const UserLogin = () => {
       email: email,
       password: password,
     };
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,userData);
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,userData,{ withCredentials: true });
       if(response.status === 200 || response.status === 201) {
       const data = response.data;
       setUser(data.user);
